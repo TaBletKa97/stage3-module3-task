@@ -35,6 +35,8 @@ subprojects {
         testImplementation "com.tngtech.archunit:archunit-junit5:1.0.0"
         // https://mvnrepository.com/artifact/org.assertj/assertj-core
         testImplementation 'org.assertj:assertj-core:3.24.2'
+        // https://mvnrepository.com/artifact/com.h2database/h2
+        testImplementation 'com.h2database:h2:2.1.214'
     }
     test {
         useJUnitPlatform()

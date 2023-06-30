@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,24 +20,23 @@ public class NewsRepositoryImpl extends AbstractRepository<News, Long> {
     }
 
     @Override
-    protected void setUpForCreate(Session session, News entity) {
-        Author mergedAuthor = (Author) session.merge(entity.getAuthor());
+    protected void setUpForCreate(EntityManager manager, News entity) {
+        Author mergedAuthor = manager.merge(entity.getAuthor());
         entity.setAuthor(mergedAuthor);
 
         List<Tag> tags = entity.getTags().stream()
-                .map(session::merge)
-                .map(e -> (Tag) e)
+                .map(manager::merge)
                 .collect(Collectors.toList());
         entity.setTags(tags);
 
-        session.persist(entity);
+        manager.persist(entity);
     }
 
     @Override
-    protected void setUpForUpdateEntity(Session session, News oldEntity, News newEntity) {
+    protected void setUpForUpdateEntity(EntityManager manager, News oldEntity, News newEntity) {
         Author newAuthor = newEntity.getAuthor();
         if (newAuthor != null) {
-            newAuthor = (Author) session.merge(newAuthor);
+            newAuthor = manager.merge(newAuthor);
         }
         oldEntity.setAuthor(newAuthor);
         oldEntity.setTitle(newEntity.getTitle());
@@ -44,8 +44,7 @@ public class NewsRepositoryImpl extends AbstractRepository<News, Long> {
         oldEntity.getTags().clear();
         oldEntity.getTags().addAll(
                 newEntity.getTags().stream()
-                .map(session::merge)
-                .map(mergedTag -> (Tag) mergedTag)
+                .map(manager::merge)
                 .collect(Collectors.toList()));
     }
 }

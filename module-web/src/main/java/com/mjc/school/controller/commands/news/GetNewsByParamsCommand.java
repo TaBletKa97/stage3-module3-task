@@ -42,17 +42,17 @@ public class GetNewsByParamsCommand extends AbstractNewsCommand {
         List<NewsDTOResponse> news = controller.readAll();
         if (!title.equals("0")) {
             news = news.stream()
-                    .filter(n -> n.getTitle().equals(title))
+                    .filter(n -> title.equals(n.getTitle()))
                     .collect(Collectors.toList());
         }
         if (!news.isEmpty() && !article.equals("0")) {
             news = news.stream()
-                    .filter(n-> n.getContent().equals(article))
+                    .filter(n-> article.equals(n.getContent()))
                     .collect(Collectors.toList());
         }
         if (!news.isEmpty() && !authorName.equals("0")) {
             news = news.stream()
-                    .filter(n-> n.getAuthorName().equals(authorName))
+                    .filter(n-> authorName.equals(n.getAuthorName()))
                     .collect(Collectors.toList());
         }
         if (!news.isEmpty() && !tagName.equals("0")) {

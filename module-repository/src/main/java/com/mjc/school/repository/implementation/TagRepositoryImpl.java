@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+
 @Repository
 @DependsOn("dataSource")
 public class TagRepositoryImpl extends AbstractRepository<Tag, Long> {
@@ -15,12 +17,12 @@ public class TagRepositoryImpl extends AbstractRepository<Tag, Long> {
     }
 
     @Override
-    protected void setUpForCreate(Session session, Tag entity) {
-        session.persist(entity);
+    protected void setUpForCreate(EntityManager manager, Tag entity) {
+        manager.persist(entity);
     }
 
     @Override
-    protected void setUpForUpdateEntity(Session session, Tag oldEntity, Tag newEntity) {
+    protected void setUpForUpdateEntity(EntityManager manager, Tag oldEntity, Tag newEntity) {
         oldEntity.setName(newEntity.getName());
     }
 }

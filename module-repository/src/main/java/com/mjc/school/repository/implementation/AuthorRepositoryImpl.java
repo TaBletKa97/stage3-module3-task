@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+
 @Repository
 @DependsOn("dataSource")
 public class AuthorRepositoryImpl extends AbstractRepository<Author, Long> {
@@ -14,13 +16,13 @@ public class AuthorRepositoryImpl extends AbstractRepository<Author, Long> {
     }
 
     @Override
-    protected void setUpForCreate(Session session, Author entity) {
-        session.persist(entity);
-        session.flush();
+    protected void setUpForCreate(EntityManager manager, Author entity) {
+        manager.persist(entity);
+        manager.flush();
     }
 
     @Override
-    protected void setUpForUpdateEntity(Session session, Author oldEntity, Author newEntity) {
+    protected void setUpForUpdateEntity(EntityManager manager, Author oldEntity, Author newEntity) {
         oldEntity.setName(newEntity.getName());
     }
 }
